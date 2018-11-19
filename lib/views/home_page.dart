@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wechat/views/chat_list.dart';
 import 'package:flutter_wechat/app_config.dart';
 
 enum ActionItems { GROUP_CHAT, ADD_FRIEND, QR_SCAN, PAYMENT, HELP }
 
+// 定义一个集合类 NavigationIconView
 class NavigationIconView {
+  // 构造
+  final String _title;
+  final IconData _icon;
+  final IconData _activeIcon;
   final BottomNavigationBarItem item;
 
   NavigationIconView(
-      {Key key, String title, IconData icon, IconData activeIcon})
-      : item = BottomNavigationBarItem(
+      {Key key, String title, IconData icon, IconData activeIcon}):
+      _title = title,
+      _icon = icon,
+      _activeIcon = activeIcon,
+      item = BottomNavigationBarItem(
           icon: Icon(icon),
           activeIcon: Icon(activeIcon),
           title: Text(title),
           backgroundColor: Colors.white,
         );
+        // 备注：分号之后标识对成员变量赋值
 }
 
 class MyHomePage extends StatefulWidget {
@@ -26,61 +36,67 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  PageController _pageController;
+  
   int _currentIndex = 0;
+  PageController _pageController;
   List<NavigationIconView> _navigationViews;
+ 
   List<Widget> _pages;
 
   void initState() {
     super.initState();
+    print('每次都打印吗？');
     _navigationViews = [
-      NavigationIconView(
-        title: '微信',
+    NavigationIconView(
+      title: '微信',
+      icon: IconData(
+        0xe608,
+        fontFamily: Constants.IconFontFamily,
+      ),
+      activeIcon: IconData(
+        0xe603,
+        fontFamily: Constants.IconFontFamily,
+      ),
+    ),
+    NavigationIconView(
+        title: '通讯录',
         icon: IconData(
-          0xe608,
+          0xe601,
           fontFamily: Constants.IconFontFamily,
         ),
         activeIcon: IconData(
-          0xe603,
+          0xe656,
+          fontFamily: Constants.IconFontFamily,
+        )),
+    NavigationIconView(
+        title: '发现',
+        icon: IconData(
+          0xe600,
           fontFamily: Constants.IconFontFamily,
         ),
-      ),
-      NavigationIconView(
-          title: '通讯录',
-          icon: IconData(
-            0xe601,
-            fontFamily: Constants.IconFontFamily,
-          ),
-          activeIcon: IconData(
-            0xe656,
-            fontFamily: Constants.IconFontFamily,
-          )),
-      NavigationIconView(
-          title: '发现',
-          icon: IconData(
-            0xe600,
-            fontFamily: Constants.IconFontFamily,
-          ),
-          activeIcon: IconData(
-            0xe671,
-            fontFamily: Constants.IconFontFamily,
-          )),
-      NavigationIconView(
-          title: '我',
-          icon: IconData(
-            0xe6c0,
-            fontFamily: Constants.IconFontFamily,
-          ),
-          activeIcon: IconData(
-            0xe626,
-            fontFamily: Constants.IconFontFamily,
-          )),
-    ];
+        activeIcon: IconData(
+          0xe671,
+          fontFamily: Constants.IconFontFamily,
+        )),
+    NavigationIconView(
+        title: '我',
+        icon: IconData(
+          0xe6c0,
+          fontFamily: Constants.IconFontFamily,
+        ),
+        activeIcon: IconData(
+          0xe626,
+          fontFamily: Constants.IconFontFamily,
+        )),
+  ];
+
     _pageController = PageController(initialPage: _currentIndex);
+
     _pages = [
-      Container(color: Colors.green),
-      Container(color: Colors.blue),
-      Container(color: Colors.brown),
+      ChatList(),
+      Container(child: Text('第二章')),
+      Container(child: Text('第三章')),
+      Container(child: Text('第四章')),
     ];
   }
 
@@ -105,26 +121,34 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
+    
+    //定义底部 tabs组件
     final BottomNavigationBar _bottomNavigationBarItem = BottomNavigationBar(
-      fixedColor: const Color(AppColors.TabIconActive),
-      items: _navigationViews.map((NavigationIconView view) {
-        return view.item;
-      }).toList(),
-      currentIndex: _currentIndex,
-      type: BottomNavigationBarType.fixed,
-      onTap:(int index){
-        if (index == _currentIndex ) return
-        setState((){
-          _currentIndex =  index;
+      /**
+       * fixedColor 选中顶部tabBar颜色
+       */
+        fixedColor: const Color(AppColors.TabIconActive),
+        items: _navigationViews.map((NavigationIconView view) {
+          return view.item;
+        }).toList(),
+        currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
+        onTap: (int index) {
+          print('$index');
+          if (_currentIndex == index) return;
+          setState(() {
+            _currentIndex = index;
+            _pageController.animateToPage(_currentIndex, 
+            duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
+          });
         });
-        print('$index');
-      }
-    );
 
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        /**
+         * elevation 顶部阴影值
+         */
         elevation: 0.0,
         actions: <Widget>[
           Container(
@@ -176,13 +200,17 @@ class _MyHomePageState extends State<MyHomePage> {
           ))
         ],
       ),
+      /**
+       * PageView 定义可以滑动的组件
+       */
       body: PageView.builder(
         itemBuilder: (BuildContext context, int index) {
-          return _pages[index];
+          return _pages[_currentIndex];
         },
         controller: _pageController,
         itemCount: _pages.length,
         onPageChanged: (int index) {
+          print('第一个屏幕$index');
           setState(() {
             _currentIndex = index;
           });
