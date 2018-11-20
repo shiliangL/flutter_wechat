@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wechat/views/chat_list.dart';
 import 'package:flutter_wechat/app_config.dart';
+
+import 'package:flutter_wechat/views/chat_list.dart';
+import 'package:flutter_wechat/views/book_list.dart';
+import 'package:flutter_wechat/views/found_list.dart';
+import 'package:flutter_wechat/views/my_style.dart';
 
 enum ActionItems { GROUP_CHAT, ADD_FRIEND, QR_SCAN, PAYMENT, HELP }
 
@@ -94,9 +98,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     _pages = [
       ChatList(),
-      Container(child: Text('第二章')),
-      Container(child: Text('第三章')),
-      Container(child: Text('第四章')),
+      BookList(),
+      FoundList(),
+      MyStyle()
     ];
   }
 
