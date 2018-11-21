@@ -32,23 +32,34 @@ class ChatListClass {
         * assert断言代码在编译时期如果不符合要求就会报错,提高代码的准确性
       */
 
+  getType() {
+    return this.type;
+  }
+
+  isFromNet() {
+    if (this.avatar.indexOf('http') == 0 || this.avatar.indexOf('https') == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
 
 const List<ChatListClass> mockChatLists = [
-  // const ChatListClass(
-  //   avatar: 'assets/images/ic_file_transfer.png',
-  //   title: '文件传输助手',
-  //   des: '',
-  //   updateAt: '19:56',
-  //   type: 0,
-  // ),
-  // const ChatListClass(
-  //   avatar: 'assets/images/ic_tx_news.png',
-  //   title: '腾讯新闻',
-  //   des: '豪车与出租车刮擦 俩车主划拳定责',
-  //   updateAt: '17:20',
-  //   type: 0,
-  // ),
+  const ChatListClass(
+    avatar: 'assets/images/ic_file_transfer.png',
+    title: '文件传输助手',
+    des: '',
+    updateAt: '19:56',
+    type: 0,
+  ),
+  const ChatListClass(
+    avatar: 'assets/images/ic_tx_news.png',
+    title: '腾讯新闻',
+    des: '豪车与出租车刮擦 俩车主划拳定责',
+    updateAt: '17:20',
+    type: 0,
+  ),
   const ChatListClass(
     avatar: 'https://ws1.sinaimg.cn/large/0065oQSqgy1fxd7vcz86nj30qo0ybqc1.jpg',
     title: 'lijinshanmx',

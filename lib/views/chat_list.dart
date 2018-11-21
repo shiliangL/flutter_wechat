@@ -11,6 +11,40 @@ class _ChatListItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Widget avatarImg;
+
+    //通过不同类型判断
+    // if (wechatList.getType()==0){
+    //   avatarImg = Image.asset(
+    //     wechatList.avatar,
+    //     width: Constants.ConversationAvatarSize,
+    //     height: Constants.ConversationAvatarSize
+    //   );
+    // }else{
+    //     avatarImg = Image.network(
+    //     wechatList.avatar,
+    //     width: Constants.ConversationAvatarSize,
+    //     height: Constants.ConversationAvatarSize
+    //   );
+    // }
+
+    //通过不同url判断
+    if (!wechatList.isFromNet()){
+      avatarImg = Image.asset(
+        wechatList.avatar,
+        width: Constants.ConversationAvatarSize,
+        height: Constants.ConversationAvatarSize
+      );
+    }else{
+        avatarImg = Image.network(
+        wechatList.avatar,
+        width: Constants.ConversationAvatarSize,
+        height: Constants.ConversationAvatarSize
+      );
+    }
+
+
     return Container(
       /**
        * decoration-修饰器
@@ -37,7 +71,7 @@ class _ChatListItems extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(10.0),
-            child: Image.network(wechatList.avatar,width: Constants.ConversationAvatarSize,height: Constants.ConversationAvatarSize),
+            child: avatarImg,
           ),
             /**
              * Expanded-可拓展布局最后剩下的才是自己的空间
@@ -51,9 +85,10 @@ class _ChatListItems extends StatelessWidget {
               ]
             ),
           ),
-           Column(
+          Container(width: 10.0),
+          Column(
             children: <Widget>[
-              Text(wechatList.updateAt, style: AppStyles.DesStyle)
+              Text(wechatList.updateAt, style: AppStyles.DesStyle,overflow: TextOverflow.ellipsis,softWrap: false,)
             ],
           )
         ],
