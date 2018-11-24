@@ -44,7 +44,45 @@ class _ChatListItems extends StatelessWidget {
       );
     }
 
+    // UI 未读消息
+    Widget unReadyMsgText = Container(
+      width: 20.0,
+      height: 20.0,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: Color(AppColors.NotifyDotBg)
+      ),
+      child: Text(wechatList.unreadMsgCount.toString(),style:AppStyles.UnreadMsgCountDotStyle),
+    );
 
+    /** UI 头像+未读消息
+     * Stack 堆栈式布局,定位绝对定位
+     */
+    Widget avatarContainer = Stack(
+      overflow: Overflow.visible,
+      children: <Widget>[
+        avatarImg,
+        Positioned(
+          right: -6.0,
+          top: -6.0,
+          child: wechatList.unreadMsgCount> 0 ? unReadyMsgText: Text(''),
+        ),
+      ],
+    );
+
+
+    // UI 右边勿扰模式图标
+    var _rightArea = <Widget>[
+      Text(wechatList.updateAt, style: AppStyles.DesStyle),
+      SizedBox(height: 10.0),
+      Icon(IconData(
+        0xe755,
+        fontFamily: Constants.IconFontFamily,
+      ), color: wechatList.isMute ? Color(AppColors.ConversationMuteIcon) : Colors.transparent , 
+      size: Constants.ConversationMuteIconSize)
+    ];
+    
     return Container(
       /**
        * decoration-修饰器
@@ -71,7 +109,8 @@ class _ChatListItems extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(10.0),
-            child: avatarImg,
+            // child: avatarImg,
+            child: avatarContainer,
           ),
             /**
              * Expanded-可拓展布局最后剩下的才是自己的空间
@@ -87,9 +126,10 @@ class _ChatListItems extends StatelessWidget {
           ),
           Container(width: 10.0),
           Column(
-            children: <Widget>[
-              Text(wechatList.updateAt, style: AppStyles.DesStyle,overflow: TextOverflow.ellipsis,softWrap: false,)
-            ],
+            // children: <Widget>[
+            //   Text(wechatList.updateAt, style: AppStyles.DesStyle,overflow: TextOverflow.ellipsis,softWrap: false,)
+            // ],
+            children: _rightArea,
           )
         ],
       ),
@@ -114,7 +154,6 @@ class _ChatListState extends State<ChatList> {
     return ListView.builder(
       itemBuilder: (BuildContext context, int index){
         return _ChatListItems(wechatList:mockChatLists[index]);
-
       },
       itemCount: mockChatLists.length,
     );
