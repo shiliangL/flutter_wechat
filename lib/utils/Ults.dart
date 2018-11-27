@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wechat/app_config.dart';
 
 
-enum Devices {
-  Mac,Win
+enum Device {
+  MAC, 
+  WIN
 }
 // 聊天列表类
 class ChatListClass {
@@ -60,7 +61,7 @@ const List<ChatListClass> mockChatLists = [
   const ChatListClass(
     avatar: 'assets/images/ic_tx_news.png',
     title: '腾讯新闻',
-    des: '豪车与出租车刮擦 俩车主划拳定责',
+    des: '未来需要有可以战胜tx的公司',
     updateAt: '17:20',
     type: 0,
   ),
@@ -162,3 +163,8 @@ const List<ChatListClass> mockChatLists = [
     unreadMsgCount: 0,
   ),
 ];
+
+const listClass = {
+  'showDevice': false,
+  'mockChatLists': mockChatLists
+};

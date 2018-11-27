@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wechat/app_config.dart';
-import 'package:flutter_wechat/utils/Ults.dart' show ChatListClass,mockChatLists;
+import 'package:flutter_wechat/utils/Ults.dart' show ChatListClass,mockChatLists,Device;
  
 // 定义类型
 class _ChatListItems extends StatelessWidget {
@@ -137,6 +137,52 @@ class _ChatListItems extends StatelessWidget {
   }
 }
 
+// 设备类型
+class _DeviceTpye extends StatelessWidget {
+ 
+  const _DeviceTpye({
+    this.device: Device.WIN
+  }) : 
+    assert(device != null);
+
+  final Device device;
+
+  int get iconName {
+    return device == Device.WIN ? 0xe75e : 0xe640;
+  }
+
+  String get deviceName {
+    return device == Device.WIN ? 'Windows' : 'Mac';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+       return Container(
+      padding: EdgeInsets.only(left: 24.0, top: 10.0, right: 24.0, bottom: 10.0),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            width: Constants.DividerWidth, color: Color(AppColors.DividerColor)
+          ),
+        ),
+        color: Color(AppColors.DeviceInfoItemBg)
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Icon(IconData(
+            this.iconName,
+            fontFamily: Constants.IconFontFamily
+          ), size: 24.0, color: Color(AppColors.DeviceInfoItemIcon)),
+          SizedBox(width: 16.0),
+          Text('$deviceName 微信已登录，手机通知已关闭。', style: AppStyles.DeviceInfoItemTextStyle),
+        ],
+      ),
+    );
+  }
+}
+
 class ChatList extends StatefulWidget {
   
 
@@ -153,7 +199,11 @@ class _ChatListState extends State<ChatList> {
     // );
     return ListView.builder(
       itemBuilder: (BuildContext context, int index){
-        return _ChatListItems(wechatList:mockChatLists[index]);
+        // return _ChatListItems(wechatList:mockChatLists[index]);
+        if(index == 0) {
+          return _DeviceTpye(device: Device.MAC);
+        }
+        return _ChatListItems(wechatList: mockChatLists[index]);
       },
       itemCount: mockChatLists.length,
     );
