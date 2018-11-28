@@ -203,9 +203,9 @@ class _ChatListState extends State<ChatList> {
         if(index == 0) {
           return _DeviceTpye(device: Device.MAC);
         }
-        return _ChatListItems(wechatList: mockChatLists[index]);
+        return _ChatListItems(wechatList: mockChatLists[index-1]);
       },
-      itemCount: mockChatLists.length,
+      itemCount: mockChatLists.length+1,
     );
   }
 }
