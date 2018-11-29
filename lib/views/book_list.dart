@@ -36,24 +36,44 @@ class _RomItem extends StatelessWidget {
       );
     }
 
+    // 分组
+    Widget groupItems = Row(children: <Widget>[
+      avatarItem,
+      SizedBox(
+        width: 10.0,
+      ),
+      Text(title),
+    ]);
+
+    // 分组是否有字母标识
+    Widget groupItemsIsL;
+    if (this.groupTitle != null) {
+      groupItemsIsL = Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
+            color: const Color(AppColors.ContactGroupTitleBg),
+            alignment: Alignment.centerLeft,
+            child: Text(this.groupTitle, style: AppStyles.GroupTitleItemTextStyle),
+          ),
+          groupItems
+        ],
+      );
+    } else {
+      groupItemsIsL = groupItems;
+    }
+
     return Container(
-        margin: const EdgeInsets.only(
-            left: 16.0, right: 16.0, top: 6.0, bottom: 10.0),
+        margin: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
         decoration: BoxDecoration(
             border: Border(
           bottom: BorderSide(
               width: Constants.DividerWidth,
               color: const Color(AppColors.DividerColor)),
         )),
-        child: Row(
-          children: <Widget>[
-            avatarItem,
-            SizedBox(
-              width: 10.0,
-            ),
-            Text(title),
-          ],
-        ));
+        child: groupItemsIsL,
+    );
   }
 }
 
@@ -63,14 +83,8 @@ class BookList extends StatefulWidget {
 
 class _BookListState extends State<BookList> {
   final BookListsData data = BookListsData.mockList();
-  static List<Books> _booklists = [];
-
-  void initState() {
-    super.initState();
-    _booklists..addAll(data.list)..addAll(data.list)..addAll(data.list);
-  }
-
-  Widget _fnColumnItem = Column(children: <Widget>[
+  final List<Books> _booklists = [];
+  final List<_RomItem> _fnItems = [
     _RomItem(
         avatar: 'assets/images/ic_new_friend.png',
         title: '新的朋友',
@@ -95,35 +109,39 @@ class _BookListState extends State<BookList> {
         onPressed: () {
           print('添加公众号。');
         }),
-  ]);
+  ];
 
-
-  Widget _bookListItems = ListView.builder(
-    itemBuilder: (BuildContext context, int index){
-        Books _itemData = _booklists[index];
-        return _RomItem(
-            avatar: _itemData.avatar, title: _itemData.name, groupTitle: null);
-      },
-  );
-
+  void initState() {
+    super.initState();
+    _booklists..addAll(data.list)..addAll(data.list)..addAll(data.list);
+  }
 
   @override
   Widget build(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) {
+       
+       bool _isGroupTitle = true;
 
-    return ListView(
+        if (index < _fnItems.length) {
+          _isGroupTitle = false;
+          return _fnItems[index];
+        }else{
+          _isGroupTitle = true;
+        }
 
-      children: <Widget>[
-          _fnColumnItem,
-          // _bookListItems
-      ],
+        int _totalIndex = index - _fnItems.length;
+        Books _itemData = _booklists[_totalIndex];
+ 
+
+        return _RomItem(
+            avatar: _itemData.avatar, 
+            title: _itemData.name, 
+            groupTitle: _isGroupTitle ?  _itemData.nameIndex : null
+        );
+      },
+      itemCount: _fnItems.length + _booklists.length,
     );
-    // return Container(
-    //   child: Column(
-    //     children: <Widget>[
-    //       _fnColumnItem,
-    //       _bookListItems
-    //     ],
-    //   ),
-    // );
+    ;
   }
 }

@@ -1,16 +1,19 @@
-# flutter_wechat
+### 页面组件
 
-A new Flutter project.
-
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
-
-# 页面组合
-
-- PageView支持滑动的组件
-  > PageView没有滑动效果bug（是有背景色看不出来尴尬了）
+- PageView 的使用(支持滑动的组件)
 
 - 网络图片的加载、使用、占位、缓存问题
-  > 问题Image.network加载网络图片问题,ios可以加载,安卓加载不了
+
+- 常用布局
+
+```dart
+margin: const EdgeInsets.symmetric(horizontal: 16.0) //水平
+padding: const EdgeInsets.symmetric(vertical: 10.0) // 垂直
+decoration: BoxDecoration(
+border: Border(
+    bottom: BorderSide(
+        width: Constants.DividerWidth, 
+        color: const Color(AppColors.DividerColor)
+    )
+)
+```

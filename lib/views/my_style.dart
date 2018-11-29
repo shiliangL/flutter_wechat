@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
    @override
    Widget build(BuildContext context) {
      return Container(
-        color: Colors.greenAccent,
         child: Text('FoundList'),
      );
    }
